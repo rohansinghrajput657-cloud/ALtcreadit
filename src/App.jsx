@@ -11,7 +11,6 @@ import Logo from './components/Logo';
 import TierDonutChart from './components/TierDonutChart';
 import OnTimeRatioBarChart from './components/OnTimeRatioBarChart';
 import { useCountUp } from './utils/useCountUp';
-import { RotateCcw } from 'lucide-react';
 
 export default function App() {
   const [currentView, setCurrentView] = useState('list'); // 'list' | 'detail' | 'consent' | 'ingestion' | 'privacy' | 'model'
@@ -84,10 +83,6 @@ export default function App() {
     setCurrentView('detail');
   };
 
-  const handleReplayAnimations = () => {
-    setAnimTrigger((prev) => prev + 1);
-  };
-
   return (
     <div className="min-h-screen bg-transparent text-[#13233A] pb-16 font-sans relative overflow-x-hidden">
       {/* Subtle Desktop Mouse Glow */}
@@ -106,19 +101,6 @@ export default function App() {
                 <span className="w-1.5 h-1.5 rounded-full bg-[#B7791F]" />
                 Demo Data — Fictional Applicants Only
               </span>
-
-              {/* Replay animations button */}
-              {currentView === 'list' && (
-                <button
-                  type="button"
-                  onClick={handleReplayAnimations}
-                  className="btn-interactive inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[8px] text-xs font-semibold text-[#13233A] bg-white border border-[#E3DFD6] hover:border-[#13233A]/40 shadow-sm"
-                  title="Re-run count-ups, gauge fills, and entrances from 0"
-                >
-                  <RotateCcw className="w-3.5 h-3.5 text-[#0E7A4B]" />
-                  <span>Replay animations</span>
-                </button>
-              )}
 
               {currentView === 'list' && (
                 <div className="flex items-center gap-2 flex-wrap">
