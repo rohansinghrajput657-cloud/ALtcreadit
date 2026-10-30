@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import ScoreGauge from './ScoreGauge';
+import AffordabilityChart from './AffordabilityChart';
+import WhatIfProgression from './WhatIfProgression';
+import Logo from './Logo';
 import { ArrowLeft, RotateCcw } from 'lucide-react';
 import { useCountUp } from '../utils/useCountUp';
 
@@ -58,7 +61,7 @@ export default function ApplicantDetail({ applicant, onBack }) {
   useEffect(() => {
     let frameId;
     const startTime = performance.now();
-    const duration = 500; // Snappy half-second smooth count transition
+    const duration = 500;
     const startVal = animatedSimScore;
     const diff = targetSimulatedScore - startVal;
 
@@ -104,7 +107,7 @@ export default function ApplicantDetail({ applicant, onBack }) {
     setWhatIf3(false);
   };
 
-  // Solid tier colors strictly for dot, gauge, and 3px left edge
+  // Solid tier colors strictly for dot, gauge, and 4px left edge
   const getTierColor = (t) => {
     switch (t) {
       case 'Low Risk':
@@ -156,63 +159,63 @@ export default function ApplicantDetail({ applicant, onBack }) {
     : ((detailDisplayScore - minScore) / (maxScore - minScore)) * 100;
 
   return (
-    <div className="space-y-6 view-enter-slide">
-      {/* Top Bar: Back Button & Context Badge */}
-      <div className="flex items-center justify-between gap-4">
+    <div className="space-y-6 view-enter-slide pb-10">
+      {/* Top Bar: Back Button, Brand Logo & Context Badge */}
+      <div className="flex items-center justify-between gap-4 flex-wrap">
         <button
           type="button"
           onClick={onBack}
-          className="btn-interactive inline-flex items-center gap-2 px-3 py-1.5 rounded-[8px] text-xs font-semibold text-[#13233A] bg-white border border-[#E3DFD6] hover:border-[#13233A]/40"
+          className="btn-interactive inline-flex items-center gap-2 px-3.5 py-1.5 rounded-[8px] text-xs font-semibold text-[#13233A] bg-white border border-[#E3DFD6] hover:border-[#13233A]/40 shadow-sm"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Back to Applicants</span>
         </button>
 
-        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-[6px] text-xs font-medium bg-white text-[#667085] border border-[#E3DFD6]">
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[6px] text-xs font-medium bg-white text-[#667085] border border-[#E3DFD6] shadow-sm">
           <span className="w-1.5 h-1.5 rounded-full bg-[#B7791F]" />
           Demo Data — Fictional Applicants Only
         </span>
       </div>
 
       {/* Profile Header */}
-      <div className="bg-white rounded-[14px] border border-[#E3DFD6] p-5 sm:p-6 transition-all duration-300 hover:shadow-sm">
-        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-3 pb-4 border-b border-[#E3DFD6]">
+      <div className="card-top-accent bg-white rounded-[18px] border border-[#E3DFD6] p-6 shadow-sm transition-all duration-300 hover:shadow-md">
+        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-4 pb-4 border-b border-[#E3DFD6]">
           <div>
             <div className="flex items-center gap-3 flex-wrap">
-              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#13233A] tracking-tight">
+              <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#13233A] tracking-tight">
                 {name}
               </h2>
-              <span className="text-xs font-mono font-medium text-[#667085] bg-[#F5F3EE] px-2.5 py-0.5 rounded border border-[#E3DFD6]">
+              <span className="text-xs font-mono font-medium text-[#667085] bg-[#F5F3EE] px-3 py-0.5 rounded border border-[#E3DFD6]">
                 {id}
               </span>
             </div>
-            <p className="text-sm text-[#667085] font-medium mt-1">
+            <p className="text-sm sm:text-base text-[#667085] font-medium mt-1">
               {occupation}
             </p>
           </div>
 
-          <div className="flex items-center gap-4 text-xs">
+          <div className="flex items-center gap-5 text-xs">
             <div>
               <span className="text-[10px] font-semibold uppercase tracking-wider text-[#667085] block">
                 MASKED PHONE
               </span>
-              <span className="font-mono text-[#13233A] font-medium">{maskedPhone}</span>
+              <span className="font-mono text-[#13233A] font-semibold text-xs">{maskedPhone}</span>
             </div>
             <div className="h-6 w-px bg-[#E3DFD6]" />
             <div>
               <span className="text-[10px] font-semibold uppercase tracking-wider text-[#667085] block">
                 MASKED ACCOUNT
               </span>
-              <span className="font-mono text-[#13233A] font-medium">{maskedAccount}</span>
+              <span className="font-mono text-[#13233A] font-semibold text-xs">{maskedAccount}</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Row 1: Asymmetric Bento Grid (Score Hero tile [2 cols] + Key Stats Stack [1 col]) */}
+      {/* Row 1: Asymmetric Bento Grid (Score Hero tile [2 cols] with 72px+ score + Key Stats Stack [1 col]) */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Score Hero Tile (spans 2 cols) */}
-        <div className={`lg:col-span-2 bg-white rounded-[14px] border border-[#E3DFD6] border-l-[3px] ${tierBorderClass} p-6 flex flex-col justify-between shadow-[0_2px_8px_rgba(19,35,58,0.03)] hover:shadow-md transition-shadow duration-300`}>
+        <div className={`card-top-accent lg:col-span-2 bg-white rounded-[18px] border border-[#E3DFD6] border-l-[4px] ${tierBorderClass} p-7 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow duration-300`}>
           <div>
             <div className="flex items-start justify-between gap-4 mb-4 pb-3 border-b border-[#E3DFD6]">
               <div>
@@ -220,15 +223,15 @@ export default function ApplicantDetail({ applicant, onBack }) {
                   ALTERNATIVE CREDIT ASSESSMENT
                 </span>
                 <div className="flex items-baseline gap-2 mt-1">
-                  <span className="text-4xl font-bold tracking-tight text-[#13233A] tabular-nums">
+                  <span className="text-5xl sm:text-7xl font-serif font-extrabold tracking-tight text-gradient-navy-emerald tabular-nums">
                     {detailDisplayScore}
                   </span>
-                  <span className="text-sm text-[#667085] font-normal">/ 900</span>
+                  <span className="text-base text-[#667085] font-medium">/ 900</span>
                 </div>
               </div>
 
               <div className="flex flex-col items-end gap-1.5">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[6px] text-xs font-semibold bg-white border border-[#E3DFD6] text-[#13233A]">
+                <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-semibold bg-white border border-[#E3DFD6] text-[#13233A] shadow-sm">
                   <span 
                     className="w-2 h-2 rounded-full shrink-0" 
                     style={{ backgroundColor: tierColor }}
@@ -252,6 +255,7 @@ export default function ApplicantDetail({ applicant, onBack }) {
                 showHeader={false} 
                 displayScore={detailDisplayScore}
                 fillPercentage={currentDetailGaugePct}
+                isHero={true}
               />
             </div>
           </div>
@@ -263,7 +267,7 @@ export default function ApplicantDetail({ applicant, onBack }) {
         </div>
 
         {/* Key Stats Stack (spans 1 col, hairline dividers, big tabular numbers) */}
-        <div className="bg-white rounded-[14px] border border-[#E3DFD6] p-5 flex flex-col justify-between hover:border-[#13233A]/30 transition-colors duration-200">
+        <div className="card-top-accent bg-white rounded-[18px] border border-[#E3DFD6] p-6 flex flex-col justify-between hover:border-[#13233A]/30 transition-colors duration-200 shadow-sm">
           <div>
             <span className="text-[11px] font-semibold uppercase tracking-wider text-[#667085] block mb-3 pb-2 border-b border-[#E3DFD6]">
               FINANCIAL METRICS
@@ -274,8 +278,8 @@ export default function ApplicantDetail({ applicant, onBack }) {
                 <span className="text-[11px] uppercase font-semibold text-[#667085] tracking-wider">
                   ON-TIME BILLS
                 </span>
-                <span className="text-base font-bold text-[#13233A] tabular-nums">
-                  {displayOnTime}/12 bills on-time
+                <span className="text-base font-bold text-[#13233A] tabular-nums font-mono">
+                  {displayOnTime}/12 bills
                 </span>
               </div>
 
@@ -283,7 +287,7 @@ export default function ApplicantDetail({ applicant, onBack }) {
                 <span className="text-[11px] uppercase font-semibold text-[#667085] tracking-wider">
                   LATE PAYMENTS
                 </span>
-                <span className="text-base font-bold text-[#13233A] tabular-nums">
+                <span className="text-base font-bold text-[#13233A] tabular-nums font-mono">
                   {displayLate}
                 </span>
               </div>
@@ -292,7 +296,7 @@ export default function ApplicantDetail({ applicant, onBack }) {
                 <span className="text-[11px] uppercase font-semibold text-[#667085] tracking-wider">
                   BOUNCES
                 </span>
-                <span className="text-base font-bold text-[#13233A] tabular-nums">
+                <span className="text-base font-bold text-[#13233A] tabular-nums font-mono">
                   {displayBounces}
                 </span>
               </div>
@@ -301,7 +305,7 @@ export default function ApplicantDetail({ applicant, onBack }) {
                 <span className="text-[11px] uppercase font-semibold text-[#667085] tracking-wider">
                   AVG MONTHLY BAL.
                 </span>
-                <span className="text-base font-bold text-[#13233A] tabular-nums">
+                <span className="text-base font-bold text-[#13233A] tabular-nums font-mono">
                   Rs. {displayAvgBal.toLocaleString('en-IN')}
                 </span>
               </div>
@@ -312,7 +316,7 @@ export default function ApplicantDetail({ applicant, onBack }) {
                   <span className="text-[11px] uppercase font-semibold text-[#667085] tracking-wider">
                     MONTHLY EXPENSES
                   </span>
-                  <span className="text-base font-bold text-[#13233A] tabular-nums">
+                  <span className="text-base font-bold text-[#13233A] tabular-nums font-mono">
                     {monthlyExpenses}
                   </span>
                 </div>
@@ -323,7 +327,7 @@ export default function ApplicantDetail({ applicant, onBack }) {
                   <span className="text-[11px] uppercase font-semibold text-[#667085] tracking-wider">
                     MONTHLY SAVINGS
                   </span>
-                  <span className="text-base font-bold text-[#13233A] tabular-nums">
+                  <span className="text-base font-bold text-[#13233A] tabular-nums font-mono">
                     {monthlySavings}
                   </span>
                 </div>
@@ -334,7 +338,7 @@ export default function ApplicantDetail({ applicant, onBack }) {
                   <span className="text-[11px] uppercase font-semibold text-[#667085] tracking-wider">
                     EXPENSE RATIO
                   </span>
-                  <span className="text-base font-bold text-[#C0392B] tabular-nums">
+                  <span className="text-base font-bold text-[#C0392B] tabular-nums font-mono">
                     {expenseRatio}
                   </span>
                 </div>
@@ -353,15 +357,20 @@ export default function ApplicantDetail({ applicant, onBack }) {
         </div>
       </div>
 
-      {/* Row 2: Payment Timeline as a Ledger Table (Chronological Stagger Animation) */}
-      <div className="bg-white rounded-[14px] border border-[#E3DFD6] p-5 sm:p-6">
-        <div className="mb-3 pb-2 border-b border-[#E3DFD6]">
-          <span className="text-[11px] font-semibold uppercase tracking-wider text-[#667085] block">
-            HISTORICAL BEHAVIOUR
+      {/* Row 2: Payment Timeline Chart (Chronological Stagger Animation May -> Oct) */}
+      <div className="card-top-accent bg-white rounded-[18px] border border-[#E3DFD6] p-6 shadow-sm">
+        <div className="mb-3 pb-2 border-b border-[#E3DFD6] flex items-center justify-between">
+          <div>
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-[#667085] block">
+              PAYMENT TIMELINE CHART
+            </span>
+            <h3 className="text-base font-bold font-serif text-[#13233A] mt-0.5">
+              Last 6 Months Clearance (May–Oct 2026)
+            </h3>
+          </div>
+          <span className="text-xs font-mono text-[#667085]">
+            Chronological View
           </span>
-          <h3 className="text-base font-bold text-[#13233A] mt-0.5">
-            Payment Timeline — Last 6 Months (May-Oct 2026)
-          </h3>
         </div>
 
         {/* Ledger Table with staggered chronological row entrance */}
@@ -371,28 +380,46 @@ export default function ApplicantDetail({ applicant, onBack }) {
               <tr className="border-b border-[#E3DFD6] text-[#667085]">
                 <th className="py-2.5 px-3 font-semibold text-[10px] uppercase tracking-wider">Month</th>
                 <th className="py-2.5 px-3 font-semibold text-[10px] uppercase tracking-wider">Period</th>
+                <th className="py-2.5 px-3 font-semibold text-[10px] uppercase tracking-wider">Status Timeline Bar</th>
                 <th className="py-2.5 px-3 font-semibold text-[10px] uppercase tracking-wider">Clearance Status</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#E3DFD6]">
               {timeline.map((item, index) => {
                 const dotColor = getTimelineStatusColor(item.status);
+                const barGradient = item.status === 'On-time'
+                  ? 'linear-gradient(90deg, #0E7A4B 0%, #3AA76A 100%)'
+                  : item.status === 'Late'
+                  ? 'linear-gradient(90deg, #B7791F 0%, #D49B44 100%)'
+                  : 'linear-gradient(90deg, #C0392B 0%, #E05847 100%)';
+
                 return (
                   <tr 
                     key={item.month} 
                     style={{ animationDelay: `${200 + index * 180}ms` }}
                     className="anim-slide-left hover:bg-[#F5F3EE]/60 transition-colors"
                   >
-                    <td className="py-2.5 px-3 font-semibold text-[#13233A]">
+                    <td className="py-3 px-3 font-semibold text-[#13233A]">
                       {item.month}
                     </td>
-                    <td className="py-2.5 px-3 font-mono text-[#667085]">
+                    <td className="py-3 px-3 font-mono text-[#667085]">
                       {item.month} 2026
                     </td>
-                    <td className="py-2.5 px-3 font-semibold text-[#13233A]">
+                    <td className="py-3 px-3">
+                      <div className="h-2.5 w-36 bg-[#EAE7DF] rounded-full overflow-hidden shadow-inner">
+                        <div
+                          className="h-full rounded-full"
+                          style={{
+                            width: item.status === 'On-time' ? '100%' : item.status === 'Late' ? '65%' : '25%',
+                            background: barGradient
+                          }}
+                        />
+                      </div>
+                    </td>
+                    <td className="py-3 px-3 font-semibold text-[#13233A]">
                       <span className="inline-flex items-center gap-2">
                         <span 
-                          className="w-2 h-2 rounded-full shrink-0" 
+                          className="w-2.5 h-2.5 rounded-full shrink-0" 
                           style={{ backgroundColor: dotColor }}
                         />
                         <span>{item.status}</span>
@@ -409,12 +436,12 @@ export default function ApplicantDetail({ applicant, onBack }) {
       {/* Row 3: Two Factor Lists Side by Side (Staggered after Timeline) */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Left: What is helping the score (+ marks) */}
-        <div className="bg-white rounded-[14px] border border-[#E3DFD6] p-5 sm:p-6 flex flex-col justify-between">
+        <div className="card-top-accent bg-white rounded-[18px] border border-[#E3DFD6] p-6 flex flex-col justify-between shadow-sm">
           <div>
             <span className="text-[11px] font-semibold uppercase tracking-wider text-[#667085] block mb-1">
               POSITIVE BEHAVIOURAL SIGNALS
             </span>
-            <h4 className="text-sm font-bold text-[#13233A] mb-3 pb-2 border-b border-[#E3DFD6]">
+            <h4 className="text-sm font-bold font-serif text-[#13233A] mb-3 pb-2 border-b border-[#E3DFD6]">
               What is helping the score
             </h4>
 
@@ -436,12 +463,12 @@ export default function ApplicantDetail({ applicant, onBack }) {
         </div>
 
         {/* Right: What is lowering the score (- marks) */}
-        <div className="bg-white rounded-[14px] border border-[#E3DFD6] p-5 sm:p-6 flex flex-col justify-between">
+        <div className="card-top-accent bg-white rounded-[18px] border border-[#E3DFD6] p-6 flex flex-col justify-between shadow-sm">
           <div>
             <span className="text-[11px] font-semibold uppercase tracking-wider text-[#667085] block mb-1">
               RISK FACTORS &amp; GAPS
             </span>
-            <h4 className="text-sm font-bold text-[#13233A] mb-3 pb-2 border-b border-[#E3DFD6]">
+            <h4 className="text-sm font-bold font-serif text-[#13233A] mb-3 pb-2 border-b border-[#E3DFD6]">
               What is lowering the score
             </h4>
 
@@ -463,26 +490,26 @@ export default function ApplicantDetail({ applicant, onBack }) {
         </div>
       </div>
 
-      {/* Row 3.5: Affordability Check Section (Phase 6) */}
-      <div className="bg-white rounded-[14px] border border-[#E3DFD6] p-5 sm:p-6">
-        <div className="mb-3 pb-2 border-b border-[#E3DFD6]">
+      {/* Row 3.5: Affordability Check Section with Amit's Chart (Phase 6) */}
+      <div className="card-top-accent bg-white rounded-[18px] border border-[#E3DFD6] p-6 shadow-sm">
+        <div className="mb-4 pb-2 border-b border-[#E3DFD6]">
           <span className="text-[11px] font-semibold uppercase tracking-wider text-[#667085] block">
             LOAN SERVICEABILITY &amp; CASH FLOW
           </span>
-          <h4 className="text-base font-bold text-[#13233A] mt-0.5">
+          <h4 className="text-base font-bold font-serif text-[#13233A] mt-0.5">
             Affordability Check
           </h4>
         </div>
 
         {id === 'ALT-004' ? (
-          <div className="space-y-4">
+          <div className="space-y-5">
             {/* Income, Expenses, Savings, Expense Ratio Summary */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-[#F5F3EE]/60 rounded-[10px] p-3.5 border border-[#E3DFD6]">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-[#F5F3EE]/60 rounded-[12px] p-4 border border-[#E3DFD6]">
               <div>
                 <span className="text-[10px] uppercase font-semibold text-[#667085] tracking-wider block">
                   INCOME
                 </span>
-                <span className="text-xs sm:text-sm font-bold text-[#13233A] mt-0.5 block">
+                <span className="text-sm font-bold font-mono text-[#13233A] mt-0.5 block">
                   Rs. 50,000
                 </span>
               </div>
@@ -490,7 +517,7 @@ export default function ApplicantDetail({ applicant, onBack }) {
                 <span className="text-[10px] uppercase font-semibold text-[#667085] tracking-wider block">
                   EXPENSES
                 </span>
-                <span className="text-xs sm:text-sm font-bold text-[#13233A] mt-0.5 block">
+                <span className="text-sm font-bold font-mono text-[#13233A] mt-0.5 block">
                   Rs. 48,000
                 </span>
               </div>
@@ -498,7 +525,7 @@ export default function ApplicantDetail({ applicant, onBack }) {
                 <span className="text-[10px] uppercase font-semibold text-[#667085] tracking-wider block">
                   SAVINGS
                 </span>
-                <span className="text-xs sm:text-sm font-bold text-[#13233A] mt-0.5 block">
+                <span className="text-sm font-bold font-mono text-[#13233A] mt-0.5 block">
                   Rs. 2,000
                 </span>
               </div>
@@ -506,15 +533,18 @@ export default function ApplicantDetail({ applicant, onBack }) {
                 <span className="text-[10px] uppercase font-semibold text-[#667085] tracking-wider block">
                   EXPENSE RATIO
                 </span>
-                <span className="text-xs sm:text-sm font-bold text-[#C0392B] mt-0.5 block">
+                <span className="text-sm font-bold font-mono text-[#C0392B] mt-0.5 block">
                   96%
                 </span>
               </div>
             </div>
 
+            {/* Affordability Visual Chart for Amit */}
+            <AffordabilityChart />
+
             {/* EMI Table at 12% illustrative interest for Rs. 2,00,000 loan */}
             <div>
-              <span className="text-[11px] font-semibold uppercase tracking-wider text-[#667085] block mb-1.5">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-[#667085] block mb-2">
                 EMI TABLE AT 12% ILLUSTRATIVE INTEREST FOR RS. 2,00,000 LOAN
               </span>
               <div className="overflow-x-auto">
@@ -554,7 +584,7 @@ export default function ApplicantDetail({ applicant, onBack }) {
 
             {/* Verdict and Alternative */}
             <div className="space-y-2 pt-2 border-t border-[#E3DFD6]">
-              <div className="p-3 bg-[#F5F3EE]/60 rounded-[8px] border border-[#E3DFD6]">
+              <div className="p-3.5 bg-[#F5F3EE]/60 rounded-[10px] border border-[#E3DFD6]">
                 <span className="text-[10px] uppercase font-semibold text-[#C0392B] tracking-wider block mb-0.5">
                   VERDICT
                 </span>
@@ -563,7 +593,7 @@ export default function ApplicantDetail({ applicant, onBack }) {
                 </p>
               </div>
 
-              <div className="p-3 bg-white rounded-[8px] border border-[#E3DFD6]">
+              <div className="p-3.5 bg-white rounded-[10px] border border-[#E3DFD6]">
                 <span className="text-[10px] uppercase font-semibold text-[#0E7A4B] tracking-wider block mb-0.5">
                   COUNTER-OFFER GUIDANCE
                 </span>
@@ -602,7 +632,7 @@ export default function ApplicantDetail({ applicant, onBack }) {
       </div>
 
       {/* Row 4: Decision Strip */}
-      <div className="bg-white rounded-[14px] border border-[#E3DFD6] p-5 sm:p-6">
+      <div className="card-top-accent bg-white rounded-[18px] border border-[#E3DFD6] p-6 shadow-sm">
         <span className="text-[11px] font-semibold uppercase tracking-wider text-[#667085] block mb-2">
           RECOMMENDED NEXT STEPS
         </span>
@@ -612,10 +642,10 @@ export default function ApplicantDetail({ applicant, onBack }) {
             <span className="text-[10px] uppercase font-semibold text-[#667085] tracking-wider block">
               FINAL DECISION
             </span>
-            <div className="text-base font-bold text-[#13233A] mt-1">
+            <div className="text-lg font-bold font-serif text-[#13233A] mt-1">
               {decision}
             </div>
-            <div className="text-xs text-[#667085] font-medium mt-0.5">
+            <div className="text-xs text-[#667085] font-medium mt-1">
               Eligible Amount: <span className="text-[#13233A] font-semibold">{loanAmount}</span>
             </div>
           </div>
@@ -631,8 +661,8 @@ export default function ApplicantDetail({ applicant, onBack }) {
         </div>
       </div>
 
-      {/* Row 5: What-If Simulator Section (Phase 4 & Animated) */}
-      <div className="bg-white rounded-[14px] border border-[#E3DFD6] p-5 sm:p-6">
+      {/* Row 5: What-If Simulator Section with What-If Progression Tracker */}
+      <div className="card-top-accent bg-white rounded-[18px] border border-[#E3DFD6] p-6 shadow-sm">
         <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-2 mb-4 pb-3 border-b border-[#E3DFD6]">
           <div>
             <span className="text-[11px] font-semibold uppercase tracking-wider text-[#667085] block">
@@ -649,7 +679,7 @@ export default function ApplicantDetail({ applicant, onBack }) {
           <button
             type="button"
             onClick={handleResetWhatIf}
-            className="btn-interactive inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[8px] text-xs font-semibold text-[#13233A] bg-white border border-[#E3DFD6] hover:border-[#13233A]/40 self-start sm:self-auto"
+            className="btn-interactive inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[8px] text-xs font-semibold text-[#13233A] bg-white border border-[#E3DFD6] hover:border-[#13233A]/40 self-start sm:self-auto shadow-sm"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             <span>Reset What-If</span>
@@ -660,66 +690,75 @@ export default function ApplicantDetail({ applicant, onBack }) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Left Column: 3 Checkboxes */}
           <div className="lg:col-span-6 space-y-3">
-            <label className="flex items-start gap-3 p-3 rounded-[10px] bg-[#F5F3EE]/60 border border-[#E3DFD6] cursor-pointer select-none transition-all hover:border-[#13233A]/40 hover:bg-[#F5F3EE]">
+            <label className="flex items-start gap-3 p-3.5 rounded-[12px] bg-[#F5F3EE]/60 border border-[#E3DFD6] cursor-pointer select-none transition-all hover:border-[#13233A]/40 hover:bg-[#F5F3EE]">
               <input
                 type="checkbox"
                 checked={whatIf1}
                 onChange={(e) => setWhatIf1(e.target.checked)}
-                className="mt-0.5 h-4 w-4 rounded border-[#E3DFD6] text-[#13233A] focus:ring-[#13233A]"
+                className="mt-0.5 h-4 w-4 rounded border-[#E3DFD6] text-[#0E7A4B] focus:ring-[#0E7A4B]"
               />
               <div className="flex-1">
                 <div className="flex items-center justify-between gap-2">
                   <span className="text-xs font-semibold text-[#13233A]">
                     Pay all bills on-time for the next 3 months
                   </span>
-                  <span className="font-mono text-[11px] font-bold text-[#0E7A4B] bg-white px-2 py-0.5 rounded border border-[#E3DFD6] shrink-0">
+                  <span className="font-mono text-[11px] font-bold text-[#0E7A4B] bg-white px-2.5 py-0.5 rounded border border-[#E3DFD6] shrink-0">
                     +37 pts
                   </span>
                 </div>
               </div>
             </label>
 
-            <label className="flex items-start gap-3 p-3 rounded-[10px] bg-[#F5F3EE]/60 border border-[#E3DFD6] cursor-pointer select-none transition-all hover:border-[#13233A]/40 hover:bg-[#F5F3EE]">
+            <label className="flex items-start gap-3 p-3.5 rounded-[12px] bg-[#F5F3EE]/60 border border-[#E3DFD6] cursor-pointer select-none transition-all hover:border-[#13233A]/40 hover:bg-[#F5F3EE]">
               <input
                 type="checkbox"
                 checked={whatIf2}
                 onChange={(e) => setWhatIf2(e.target.checked)}
-                className="mt-0.5 h-4 w-4 rounded border-[#E3DFD6] text-[#13233A] focus:ring-[#13233A]"
+                className="mt-0.5 h-4 w-4 rounded border-[#E3DFD6] text-[#0E7A4B] focus:ring-[#0E7A4B]"
               />
               <div className="flex-1">
                 <div className="flex items-center justify-between gap-2">
                   <span className="text-xs font-semibold text-[#13233A]">
                     No new late payments or bounces for 6 months
                   </span>
-                  <span className="font-mono text-[11px] font-bold text-[#0E7A4B] bg-white px-2 py-0.5 rounded border border-[#E3DFD6] shrink-0">
+                  <span className="font-mono text-[11px] font-bold text-[#0E7A4B] bg-white px-2.5 py-0.5 rounded border border-[#E3DFD6] shrink-0">
                     +28 pts
                   </span>
                 </div>
               </div>
             </label>
 
-            <label className="flex items-start gap-3 p-3 rounded-[10px] bg-[#F5F3EE]/60 border border-[#E3DFD6] cursor-pointer select-none transition-all hover:border-[#13233A]/40 hover:bg-[#F5F3EE]">
+            <label className="flex items-start gap-3 p-3.5 rounded-[12px] bg-[#F5F3EE]/60 border border-[#E3DFD6] cursor-pointer select-none transition-all hover:border-[#13233A]/40 hover:bg-[#F5F3EE]">
               <input
                 type="checkbox"
                 checked={whatIf3}
                 onChange={(e) => setWhatIf3(e.target.checked)}
-                className="mt-0.5 h-4 w-4 rounded border-[#E3DFD6] text-[#13233A] focus:ring-[#13233A]"
+                className="mt-0.5 h-4 w-4 rounded border-[#E3DFD6] text-[#0E7A4B] focus:ring-[#0E7A4B]"
               />
               <div className="flex-1">
                 <div className="flex items-center justify-between gap-2">
                   <span className="text-xs font-semibold text-[#13233A]">
                     Keep monthly income stable, no gap months
                   </span>
-                  <span className="font-mono text-[11px] font-bold text-[#0E7A4B] bg-white px-2 py-0.5 rounded border border-[#E3DFD6] shrink-0">
+                  <span className="font-mono text-[11px] font-bold text-[#0E7A4B] bg-white px-2.5 py-0.5 rounded border border-[#E3DFD6] shrink-0">
                     +26 pts
                   </span>
                 </div>
               </div>
             </label>
+
+            {/* Progression Bar Track */}
+            <WhatIfProgression
+              baseScore={score}
+              whatIf1={whatIf1}
+              whatIf2={whatIf2}
+              whatIf3={whatIf3}
+              currentSimulatedScore={animatedSimScore}
+            />
           </div>
 
           {/* Right Column: Base Score vs Animated Simulated Score */}
-          <div className="lg:col-span-6 flex flex-col justify-between bg-[#F5F3EE]/40 rounded-[10px] p-4 border border-[#E3DFD6]">
+          <div className="lg:col-span-6 flex flex-col justify-between bg-[#F5F3EE]/40 rounded-[12px] p-5 border border-[#E3DFD6]">
             <div>
               {/* Scores Comparison Strip */}
               <div className="grid grid-cols-2 divide-x divide-[#E3DFD6] pb-3 mb-3 border-b border-[#E3DFD6]">
@@ -729,7 +768,7 @@ export default function ApplicantDetail({ applicant, onBack }) {
                     BASE SCORE
                   </span>
                   <div className="flex items-baseline gap-1.5 mt-0.5">
-                    <span className="text-2xl font-bold text-[#13233A] tabular-nums">
+                    <span className="text-3xl font-bold font-serif text-[#13233A] tabular-nums">
                       {score}
                     </span>
                     <span className="text-xs text-[#667085]">/ 900</span>
@@ -756,7 +795,7 @@ export default function ApplicantDetail({ applicant, onBack }) {
                     )}
                   </div>
                   <div className="flex items-baseline gap-1.5 mt-0.5">
-                    <span className="text-2xl font-bold text-[#13233A] tabular-nums transition-none">
+                    <span className="text-3xl font-bold font-serif text-gradient-navy-emerald tabular-nums transition-none">
                       {animatedSimScore}
                     </span>
                     <span className="text-xs text-[#667085]">/ 900</span>
@@ -790,7 +829,7 @@ export default function ApplicantDetail({ applicant, onBack }) {
               </div>
             </div>
 
-            <p className="text-[11px] text-[#667085] mt-2 pt-2 border-t border-[#E3DFD6]">
+            <p className="text-[11px] text-[#667085] mt-3 pt-2 border-t border-[#E3DFD6]">
               Loan amount is unchanged in this demo. Simulated score is for explanation only.
             </p>
           </div>
@@ -798,12 +837,12 @@ export default function ApplicantDetail({ applicant, onBack }) {
       </div>
 
       {/* Row 6: Decision Audit Log Section */}
-      <div className="bg-white rounded-[14px] border border-[#E3DFD6] p-5 sm:p-6">
+      <div className="card-top-accent bg-white rounded-[18px] border border-[#E3DFD6] p-6 shadow-sm">
         <div className="mb-4 pb-2 border-b border-[#E3DFD6]">
           <span className="text-[11px] font-semibold uppercase tracking-wider text-[#667085] block">
             IMMUTABLE AUDIT TRAIL
           </span>
-          <h3 className="text-base font-bold text-[#13233A] mt-0.5">
+          <h3 className="text-base font-bold font-serif text-[#13233A] mt-0.5">
             Decision Audit Log
           </h3>
         </div>

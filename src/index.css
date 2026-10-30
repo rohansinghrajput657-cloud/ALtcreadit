@@ -2,10 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Approved Light Premium Look:
+   Background: linear-gradient(180deg, #F5F3EE 0%, #EDF2EB 45%, #F5F3EE 100%)
+   Ink: deep navy #13233A for headings, muted #667085 for labels
+*/
 body {
   margin: 0;
   min-height: 100vh;
-  background-color: #F5F3EE;
+  background: linear-gradient(180deg, #F5F3EE 0%, #EDF2EB 45%, #F5F3EE 100%);
+  background-attachment: fixed;
   color: #13233A;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -13,6 +18,37 @@ body {
 
 .tabular-nums {
   font-variant-numeric: tabular-nums;
+}
+
+/* Light text gradient: linear-gradient(90deg, #13233A, #0E7A4B) */
+.text-gradient-navy-emerald {
+  background: linear-gradient(90deg, #13233A 0%, #0E7A4B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Primary Button & Active Filter: linear-gradient(90deg, #13233A, #0E7A4B) */
+.btn-primary-gradient {
+  background: linear-gradient(90deg, #13233A 0%, #0E7A4B 100%);
+  color: #ffffff;
+  border: 1px solid rgba(19, 35, 58, 0.2);
+}
+
+/* Card top edge: linear-gradient(90deg, #0E7A4B, #C9A86A), 4px high */
+.card-top-accent {
+  position: relative;
+  overflow: hidden;
+}
+.card-top-accent::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #0E7A4B 0%, #C9A86A 100%);
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
 }
 
 /* Base keyframes for entrance */
@@ -76,10 +112,10 @@ body {
 
 @keyframes activePulse {
   0%, 100% {
-    box-shadow: 0 0 0 0 rgba(19, 35, 58, 0.25);
+    box-shadow: 0 0 0 0 rgba(14, 122, 75, 0.3);
   }
   50% {
-    box-shadow: 0 0 0 4px rgba(19, 35, 58, 0.08);
+    box-shadow: 0 0 0 5px rgba(14, 122, 75, 0.1);
   }
 }
 

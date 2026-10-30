@@ -17,13 +17,12 @@ export default function ApplicantCard({ applicant, index = 0, onClick, animTrigg
     incomePattern
   } = applicant;
 
-  // Stagger timing: Summary tiles take ~0-400ms.
-  // Cards start in order: Ramesh @ 400ms, Sneha @ 650ms, Vikram @ 900ms, Amit @ 1150ms.
-  const cardDelay = 400 + index * 250;
+  // Stagger timing: Summary tiles take ~0-350ms.
+  // Cards start in order: Ramesh @ 350ms, Sneha @ 550ms, Vikram @ 750ms, Amit @ 950ms.
+  const cardDelay = 350 + index * 200;
   const animDuration = 1600;
 
   // Parse numerical targets for count-up
-  // On-time payments: e.g. "12/12 bills on-time" -> 12
   const onTimeMatch = onTimePayments.match(/^(\d+)\/(\d+)/);
   const targetOnTime = onTimeMatch ? parseInt(onTimeMatch[1], 10) : 0;
   const totalBills = onTimeMatch ? onTimeMatch[2] : '12';
@@ -35,9 +34,8 @@ export default function ApplicantCard({ applicant, index = 0, onClick, animTrigg
   // Sync Score Gauge fill percentage from 0% to final (clamped 300 to 900)
   const minScore = 300;
   const maxScore = 900;
-  const targetPercentage = Math.max(0, Math.min(100, ((score - minScore) / (maxScore - minScore)) * 100));
   const currentGaugePercentage = displayScore < minScore 
-    ? (displayScore / minScore) * 5 // Subtle initial crawl before 300
+    ? (displayScore / minScore) * 5
     : ((displayScore - minScore) / (maxScore - minScore)) * 100;
 
   // Click ripple state
@@ -56,28 +54,32 @@ export default function ApplicantCard({ applicant, index = 0, onClick, animTrigg
     }, 180);
   };
 
-  // Tier border and hover glow styling
+  // Tier border and hover glow styling (original colors only)
   const getTierClasses = (t) => {
     switch (t) {
       case 'Low Risk':
         return {
           leftBorder: 'border-l-[#0E7A4B]',
-          hoverGlow: 'hover:shadow-[0_12px_28px_rgba(14,122,75,0.12)] hover:border-[#0E7A4B]/60'
+          hoverGlow: 'hover:shadow-[0_14px_30px_rgba(14,122,75,0.12)] hover:border-[#0E7A4B]/60',
+          badgeBg: 'bg-[#0E7A4B]/10 text-[#0E7A4B] border-[#0E7A4B]/20'
         };
       case 'Medium Risk':
         return {
           leftBorder: 'border-l-[#B7791F]',
-          hoverGlow: 'hover:shadow-[0_12px_28px_rgba(183,121,31,0.12)] hover:border-[#B7791F]/60'
+          hoverGlow: 'hover:shadow-[0_14px_30px_rgba(183,121,31,0.12)] hover:border-[#B7791F]/60',
+          badgeBg: 'bg-[#B7791F]/10 text-[#B7791F] border-[#B7791F]/20'
         };
       case 'High Risk':
         return {
           leftBorder: 'border-l-[#C0392B]',
-          hoverGlow: 'hover:shadow-[0_12px_28px_rgba(192,57,43,0.12)] hover:border-[#C0392B]/60'
+          hoverGlow: 'hover:shadow-[0_14px_30px_rgba(192,57,43,0.12)] hover:border-[#C0392B]/60',
+          badgeBg: 'bg-[#C0392B]/10 text-[#C0392B] border-[#C0392B]/20'
         };
       default:
         return {
           leftBorder: 'border-l-[#B7791F]',
-          hoverGlow: 'hover:shadow-[0_12px_28px_rgba(19,35,58,0.08)] hover:border-[#13233A]/40'
+          hoverGlow: 'hover:shadow-[0_14px_30px_rgba(19,35,58,0.08)] hover:border-[#13233A]/40',
+          badgeBg: 'bg-[#F5F3EE] text-[#13233A] border-[#E3DFD6]'
         };
     }
   };
@@ -96,7 +98,7 @@ export default function ApplicantCard({ applicant, index = 0, onClick, animTrigg
       role="button"
       tabIndex={0}
       style={{ animationDelay: `${cardDelay * 0.7}ms` }}
-      className={`anim-fade-up ripple-container bg-white rounded-[14px] border border-[#E3DFD6] border-l-[3px] ${tierStyles.leftBorder} cursor-pointer transition-all duration-300 ease-out transform hover:-translate-y-2 hover:scale-[1.015] ${tierStyles.hoverGlow} focus:outline-none focus:ring-1 focus:ring-[#13233A]`}
+      className={`card-top-accent anim-fade-up ripple-container bg-white rounded-[18px] border border-[#E3DFD6] border-l-[4px] ${tierStyles.leftBorder} cursor-pointer transition-all duration-300 ease-out transform hover:-translate-y-2 hover:scale-[1.015] ${tierStyles.hoverGlow} shadow-sm focus:outline-none focus:ring-1 focus:ring-[#13233A]`}
     >
       {/* Click Ripple element */}
       {ripple && (
@@ -114,40 +116,40 @@ export default function ApplicantCard({ applicant, index = 0, onClick, animTrigg
 
       <div className="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-[#E3DFD6]">
         {/* Left: Identity */}
-        <div className="p-5 lg:col-span-4 flex flex-col justify-between">
+        <div className="p-6 lg:col-span-4 flex flex-col justify-between">
           <div>
-            <div className="flex items-center gap-2 flex-wrap mb-1">
-              <span className="text-[11px] font-mono font-medium text-[#667085] bg-[#F5F3EE] px-2 py-0.5 rounded border border-[#E3DFD6]">
+            <div className="flex items-center gap-2 flex-wrap mb-1.5">
+              <span className="text-[11px] font-mono font-medium text-[#667085] bg-[#F5F3EE] px-2.5 py-0.5 rounded border border-[#E3DFD6]">
                 {id}
               </span>
               <span className="text-xs text-[#667085] font-medium">
                 {occupation}
               </span>
             </div>
-            <h3 className="text-lg font-bold text-[#13233A] tracking-tight">
+            <h3 className="text-xl font-bold font-serif text-[#13233A] tracking-tight">
               {name}
             </h3>
           </div>
 
-          <div className="mt-4 pt-3 border-t border-[#E3DFD6]/60 flex items-center gap-4 text-xs text-[#667085]">
+          <div className="mt-5 pt-3 border-t border-[#E3DFD6]/70 flex items-center gap-4 text-xs text-[#667085]">
             <div>
               <span className="text-[10px] uppercase font-semibold text-[#667085] tracking-wider block">
                 PHONE
               </span>
-              <span className="font-mono text-[#13233A] text-xs">{maskedPhone}</span>
+              <span className="font-mono text-[#13233A] text-xs font-medium">{maskedPhone}</span>
             </div>
             <div className="h-4 w-px bg-[#E3DFD6]" />
             <div>
               <span className="text-[10px] uppercase font-semibold text-[#667085] tracking-wider block">
                 ACCOUNT
               </span>
-              <span className="font-mono text-[#13233A] text-xs">{maskedAccount}</span>
+              <span className="font-mono text-[#13233A] text-xs font-medium">{maskedAccount}</span>
             </div>
           </div>
         </div>
 
-        {/* Centre: Score Gauge with Animated Count-up and Gauge Fill */}
-        <div className="p-5 lg:col-span-5 flex flex-col justify-center">
+        {/* Centre: Score Gauge with Big 48px+ Text-Gradient Score */}
+        <div className="p-6 lg:col-span-5 flex flex-col justify-center">
           <ScoreGauge 
             score={score} 
             tier={tier} 
@@ -157,35 +159,35 @@ export default function ApplicantCard({ applicant, index = 0, onClick, animTrigg
         </div>
 
         {/* Right: Decision, Loan Amount & Key Behavioural Stats */}
-        <div className="p-5 lg:col-span-3 flex flex-col justify-between bg-white rounded-r-[14px]">
+        <div className="p-6 lg:col-span-3 flex flex-col justify-between bg-white rounded-r-[18px]">
           <div>
             <span className="text-[11px] font-semibold uppercase tracking-wider text-[#667085] block">
               DECISION &amp; LOAN
             </span>
-            <div className="mt-1">
-              <div className="text-sm font-bold text-[#13233A] leading-tight">
+            <div className="mt-1.5">
+              <div className="text-base font-bold text-[#13233A] leading-tight">
                 {decision}
               </div>
-              <div className="text-xs font-semibold text-[#667085] mt-0.5">
+              <div className="text-xs font-semibold text-[#667085] mt-1">
                 {loanAmount}
               </div>
             </div>
           </div>
 
-          <div className="mt-4 pt-3 border-t border-[#E3DFD6]/60 grid grid-cols-2 gap-2 text-xs">
+          <div className="mt-5 pt-3 border-t border-[#E3DFD6]/70 grid grid-cols-2 gap-3 text-xs">
             <div>
               <span className="text-[10px] uppercase font-semibold text-[#667085] tracking-wider block">
                 ON-TIME
               </span>
-              <span className="font-medium text-[#13233A] text-[11px] tabular-nums">
-                {displayOnTime}/{totalBills} bills on-time
+              <span className="font-medium text-[#13233A] text-xs tabular-nums">
+                {displayOnTime}/{totalBills} bills
               </span>
             </div>
             <div>
               <span className="text-[10px] uppercase font-semibold text-[#667085] tracking-wider block">
                 PATTERN
               </span>
-              <span className="font-medium text-[#13233A] text-[11px]">
+              <span className="font-medium text-[#13233A] text-xs">
                 {incomePattern}
               </span>
             </div>
